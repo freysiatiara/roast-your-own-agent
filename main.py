@@ -35,7 +35,24 @@ def destination():
     return os.path.join(script_dir, "entry.txt")
 
 
+def validate_roast(line):
+    """Check a roast line before it is written.
+
+    A valid roast line is 1-200 characters long and not blank.
+    Raises ValueError with a clear message otherwise.
+    """
+    if not isinstance(line, str):
+        raise ValueError("roast line must be a string")
+    if not line.strip():
+        raise ValueError("roast line must not be blank or whitespace-only")
+    if len(line) < 1 or len(line) > 200:
+        raise ValueError(
+            "roast line must be 1-200 characters long, got %d" % len(line)
+        )
+
+
 def main():
+    validate_roast(ROAST)
     target = destination()
     directory = os.path.dirname(target)
     if directory:
